@@ -49,7 +49,7 @@ Options:
 -h|--help                          print this help end exit
 
 Examples:
-$PROGNAME -m 'my.test.metric' -v '123' -c -i 60 -k efd2cf60aba924191525d57555b1eebd -H lnet01
+$PROGNAME -m 'my.test.metric' -v '123' -c -i 60 -k efd...dummy-api-key-dont-use...d -H lnet01
 
 TODO:
 - allow to specify multiple tags
