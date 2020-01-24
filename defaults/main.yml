@@ -1,0 +1,7 @@
+---
+
+send_datadog_script_dir: "/opt/scripts"
+send_datadog_script_name: "send-datadog"
+send_datadog_script: "{{ send_datadog_script_dir }}/{{ send_datadog_script_name }}"
+
+send_datadog_install_deps: yes

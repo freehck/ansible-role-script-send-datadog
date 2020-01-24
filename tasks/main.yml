@@ -1,0 +1,22 @@
+---
+
+#- name: distribution specific actions
+#  include_tasks: "{{ item }}"
+#  with_first_found:
+#    - files:
+#        - "{{ ansible_distribution }}.yml"
+#        - "{{ ansible_os_family }}.yml"
+#      skip: true
+#  when: send_datadog_install_deps
+
+- name: create script directory {{ send_datadog_script_dir }}
+  file:
+    path: "{{ send_datadog_script_dir }}"
+    state: directory
+    recurse: yes
+
+- name: copy script {{ send_datadog_script_name }}
+  copy:
+    src: "send-datadog.sh"
+    dest: "{{ send_datadog_script }}"
+    mode: '0755'

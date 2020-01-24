@@ -1,0 +1,20 @@
+galaxy_info:
+  author: Dmitrii Kashin
+  description: script send-datadog, guess what it does
+  role_name: script_send_datadog
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - shell
+    - script
+    - datadog
+
+dependencies: []
