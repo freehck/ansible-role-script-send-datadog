@@ -40,8 +40,9 @@ Description: send some metrics to datadog
 Options:
 -m|--metric <metric-name>          set metric name
 -v|--value <metric-value>          set metric value
--r|--rate                          metric type is 'rate', not 'count'
+-r|--rate                          metric type is 'rate'
 -c|--count                         metric type is 'count' (default)
+-g|--gauge                         metric type is 'gauge'
 -i|--interval <metric-interval>    set metric interval (in seconds)
 -H|--host <metric-host>            set metric host
 -t|--tag <metric-tag>              set metric tag
@@ -53,7 +54,6 @@ $PROGNAME -m 'my.test.metric' -v '123' -c -i 60 -k efd...dummy-api-key-dont-use.
 
 TODO:
 - allow to specify multiple tags
-- gauge metric type
 
 EOF
 }
@@ -116,6 +116,7 @@ check_conf() {
 		found_conf_errors=y
 	    fi
 	    ;;
+	gauge) :;;
 	*) err "Unknown metric type: $METRIC_TYPE"; found_conf_errors=y;;
     esac
 
@@ -146,7 +147,10 @@ fi
 # do the thing
 
 CURRENT_TIME=$(date +%s)
-MESSAGE_BODY=$( cat <<EOF
+
+case "$METRIC_TYPE" in
+    count|rate)
+	MESSAGE_BODY=$( cat <<EOF
 { "series" :
          [{"metric":"$METRIC_NAME",
           "points":[[$CURRENT_TIME, $METRIC_VALUE]],
@@ -157,7 +161,21 @@ MESSAGE_BODY=$( cat <<EOF
         ]
 }
 EOF
-)
+		    );;
+    gauge)
+	MESSAGE_BODY=$( cat <<EOF
+{ "series" :
+         [{"metric":"$METRIC_NAME",
+          "points":[[$CURRENT_TIME, $METRIC_VALUE]],
+          "type":"$METRIC_TYPE",
+          "host":"$METRIC_HOST",
+          "tags":["$METRIC_TAGS"]}
+        ]
+}
+
+EOF
+		    );;
+esac
 
 if [ -n "$DEBUG" ]; then
     echo "$MESSAGE_BODY"
