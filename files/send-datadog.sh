@@ -60,7 +60,7 @@ EOF
 
 parse_opts() {
     local TEMP PARSE_OPTS_STATUS
-    TEMP=$(getopt -o m:v:rci:H:t:k:h --long metric:,value:,rate,count,interval:,host:,tag:key:,api-key:,help -- "$@")
+    TEMP=$(getopt -o m:v:rci:gH:t:k:h --long metric:,value:,rate,count,interval:,gauge,host:,tag:key:,api-key:,help -- "$@")
     PARSE_OPTS_STATUS="$?"
     if [ "$PARSE_OPTS_STATUS" != 0 ]; then
 	err "Error in parsing options";
@@ -81,6 +81,7 @@ parse_opts() {
 	    -r|--rate) METRIC_TYPE="rate"; shift;;
 	    -c|--count) METRIC_TYPE="count"; shift;;
 	    -i|--interval) METRIC_INTERVAL="$2"; shift 2;;
+	    -g|--gauge) METRIC_TYPE="gauge"; shift;;
 	    -H|--host) METRIC_HOST="$2"; shift 2;;
 	    -t|--tag) METRIC_TAGS="$2"; shift 2;;
 	    -k|--key|--api-key) DATADOG_API_KEY="$2"; shift 2;;
